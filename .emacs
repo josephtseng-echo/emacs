@@ -12,15 +12,12 @@
 ;;;; 关闭启动画面    
 (setq inhibit-startup-message t)    
 ;;;;设置大的kill ring    
-(setq kill-ring-max 150)
 (menu-bar-mode 0) 
 (tool-bar-mode nil);去掉那个大大的工具栏    
 (scroll-bar-mode nil);去掉滚动条，因为可以使用鼠标滚轮了 ^_^    
 (setq x-select-enable-clipboard t);支持emacs和外部程序的粘贴    
-(font-lock-mode t) ; 开启语法高亮
+(global-font-lock-mode t); 开启语法高亮
 (auto-image-file-mode)
-(mouse-avoidance-mode 'animate)
-(global-font-lock-mode t)
 (setq user-full-name "josephzeng")
 (setq user-mail-address "josephzeng36@gmail.com")
 
@@ -30,6 +27,7 @@
 (blink-cursor-mode -1)
 (transient-mark-mode 1)
 
+(setq-default make-backup-files nil);不产生临时文件
 (fset 'yes-or-no-p 'y-or-n-p)
 
 (setq default-tab-width 4)
@@ -46,6 +44,7 @@
 (setq c-basic-offset 4)
 (setq indent-tabs-mode nil)))
 
+;;编码
 (setq default-buffer-file-coding-system 'utf-8-unix)
 (setq default-file-name-coding-system 'utf-8-unix)
 (set-language-environment 'utf-8)  
@@ -81,8 +80,7 @@
 (setq global-mark-ring-max 1024)        ;设置最大的全局标记容量
 (setq history-delete-duplicates t)      ;删除minibuffer的重复历史
 
-(setq ecb-history-make-buckets 'never)
-
+;;php
 (require 'php-mode)
 (add-hook 'php-mode-user-hook 'turn-on-font-lock)
 ;;根据扩展名绑定
@@ -95,6 +93,7 @@
 (setq c-basic-offset 4)
 (setq indent-tabs-mode nil)))
 
+;;auto-complete
 (add-to-list 'load-path "~/.emacs.d/site-lisp/auto-complete")
 (require 'auto-complete-etags)
 (add-to-list 'ac-sources 'ac-source-etags)
@@ -132,14 +131,14 @@
 (define-key ac-mode-map (kbd "M-j") 'auto-complete)
 (define-key ac-completing-map "\ESC/" 'ac-stop)
 
-
+;;mmm-mode
 (add-to-list 'load-path "~/.emacs.d/site-lisp/mmm-mode")
 (require 'mmm-mode)
 (require 'mmm-auto)
 (setq mmm-global-mode 'maybe)
 (mmm-add-mode-ext-class 'html-mode "\\.php\\'" 'html-php)
 
-
+;;yasnippet
 ;;(load-file "~/.emacs.d/site-lisp/yasnippet.el")
 ;; not yasnippet-bundle
 (require 'yasnippet)
@@ -153,13 +152,19 @@
 
 ;;Load cedet
 (load-file "~/.emacs.d/site-lisp/cedet/common/cedet.el")
-(global-ede-mode 1)
+(require 'semantic)
+(require 'semantic-ia)
+(require 'semanticdb)
 (semantic-load-enable-code-helpers)
 (global-srecode-minor-mode 1)
 (global-ede-mode 1)
 (semantic-load-enable-minimum-features)
 (semantic-load-enable-code-helpers)
+(semantic-load-enable-guady-code-helpers)
+(semantic-load-enable-excessive-code-helpers)
+;(semantic-load-enable-semantic-debugging-helpers)
 
+;;ecb
 (add-to-list 'load-path "~/.emacs.d/site-lisp/ecb")
 (require 'ecb)
 
@@ -262,6 +267,10 @@
             anything-c-source-emacs-commands))
 (global-set-key (kbd "M-X") 'anything)
 
+
+(setq frame-title-format '("" buffer-file-name "@emacs" ));在标题栏显示buffer名称
+(set-selection-coding-system 'iso-2022-8bit-ss2-dos);网页复制乱码问题
+
 ;;emacs的重做命令模拟
 (require 'redo+)
 (global-set-key (kbd "C-?") 'redo)
@@ -350,41 +359,18 @@ autopair-handle-action-fns
 
 
 ;;;Zen Coding
-;'zencoding-expand-line bound to C-Return
+;zencoding-expand-line bound to C-Return
 ;(require 'zencoding-mode)
 ;(add-hook 'sgml-mode-hook 'zencoding-mode) ;;Auto-start on any markup modes
 ;(add-hook 'html-mode-hook 'zencoding-mode)
 ;(add-hook 'php-mode-hook 'zencoding-mode)
-
-(setq frame-title-format "%n%F/%b")
-
-(global-set-key [(meta ?/)] 'hippie-expand)
-(setq hippie-expand-try-functions-list
-'(try-expand-line
-try-expand-line-all-buffers
-try-expand-list
-try-expand-list-all-buffers
-try-expand-dabbrev
-try-expand-dabbrev-visible
-try-expand-dabbrev-all-buffers
-try-expand-dabbrev-from-kill
-try-complete-file-name
-try-complete-file-name-partially
-try-complete-lisp-symbol
-try-complete-lisp-symbol-partially
-try-expand-whole-kill))
-;;hippie的自动补齐策略，优先调用了senator的分析结果：
-(autoload 'senator-try-expand-semantic "senator")
-
 
 ;;CC-mode配置
 (require 'cc-mode)
 (c-set-offset 'inline-open 0)
 (c-set-offset 'friend '-)
 (c-set-offset 'substatement-open 0)
-:;(setq indent-tabs-mode nil)
 (setq c-basic-offset 4 )
-(setq default-tab-width 4)
 ;;(setq tab-stop-list())
 ;;(loop for x downfrom 40 to 1 do
    ;; (setq tab-stop-list (cons(* x 4) tab-stop-list)))
@@ -544,6 +530,24 @@ that was stored with ska-point-to-register."
 (global-set-key [mouse-4] 'down-slightly)
 (global-set-key [mouse-5] 'up-slightly)
 
+;shell,gdb退出后，自动关闭该buffer
+(add-hook 'shell-mode-hook 'mode-hook-func)
+(add-hook 'gdb-mode-hook 'mode-hook-func)
+(defun mode-hook-func ()
+(set-process-sentinel (get-buffer-process (current-buffer))
+         #'kill-buffer-on-exit))
+(defun kill-buffer-on-exit (process state)
+(message "%s" state)
+(if (or
+       (string-match "exited abnormally with code.*" state)
+       (string-match "finished" state))
+      (kill-buffer (current-buffer))))
+
+;防止页面滚动时跳动
+(setq scroll-margin 3
+scroll-conservatively 10000)
+
+
 ;;我一直觉得 Emacs 没有这样一个方便的命令，但是 Oliver 给了 我一个完美的答案：
 ;;有了这段代码之后，当你按 C-c a x (x 是任意一个字符) 时，光 标就会到下一个 x 处。再次按 x，光标就到下一个 x。比如 C-c a w w w w ..., C-c a b b b b b b ...
 ;;我觉得这个方式比 vi 的 "f" 要快。
@@ -564,9 +568,31 @@ that was stored with ska-point-to-register."
 (c-set-offset 'inline-open 0)
 (c-set-offset 'friend '-)
 (c-set-offset 'substatement-open 0)
+
+(defun my-c-mode-common-hook()
+;(c-toggle-auto-hungry-state 1);分号后自动换行
+;;按键定义
+(define-key c-mode-base-map [(control \`)] 'hs-toggle-hiding);将(CTRL-`)设为折页转换键
+(define-key c-mode-base-map [(return)] 'newline-and-indent);回车键自动换行并缩进
+;;预处理设置
+(setq c-macro-shrink-window-flag t)
+(setq c-macro-preprocessor "cpp")
+(setq c-macro-cppflags " ")
+(setq c-macro-prompt-flag t)
+(setq hs-minor-mode t)
+(setq abbrev-mode t)
+)
+(add-hook 'c-mode-common-hook 'my-c-mode-common-hook)
+
+;;;;C++语言编辑策略
+(defun my-c++-mode-hook()
+(c-set-style "stroustrup")
+;(define-key c++-mode-map [f3] 'replace-regexp)
+)
+
+
 :;(setq indent-tabs-mode nil)
 (setq c-basic-offset 4 )
-(setq default-tab-width 4)
 ;;(setq tab-stop-list())
 ;;(loop for x downfrom 40 to 1 do
    ;; (setq tab-stop-list (cons(* x 4) tab-stop-list)))
@@ -585,33 +611,6 @@ that was stored with ska-point-to-register."
 (add-hook 'c-mode-hook
           '(lambda ()
              (c-set-style "Stroustrup")))
-
-;;======================            自动补全功能        =====================
-;;自动补全功能，这事从王垠的网站直接Copy过来的，引用一些他对此的说明
-;;设置以下 hippie-expand 的补全方式。它是一个优先列表， hippie-expand 会优先使用表最前面
-;;的函数来补全这是说，首先使用当前的buffer补全，如果找不到，就到别的可见的窗口里寻找，如
-;;还找不到，那么到所有打开的buffer去找，如果还……那么到kill-ring里，到文件名，到简称列表
-;;里，到list，当前使用的匹配方式会在 echo 区域显示。
-;;特别有意思的是 try-expand-line，它可以帮你补全整整一行文字。我很多时后有两行文字大致相
-;;同，只有几个字不一样，但是我懒得去拷贝粘贴以下。那么我就输入这行文字的前面几个字。然后
-;;多按几下 M-/ 就能得到那一行。
-(global-set-key [(meta ?/)] 'hippie-expand)
-(setq hippie-expand-try-functions-list
-'(try-expand-line
-try-expand-line-all-buffers
-try-expand-list
-try-expand-list-all-buffers
-try-expand-dabbrev
-try-expand-dabbrev-visible
-try-expand-dabbrev-all-buffers
-try-expand-dabbrev-from-kill
-try-complete-file-name
-try-complete-file-name-partially
-try-complete-lisp-symbol
-try-complete-lisp-symbol-partially
-try-expand-whole-kill))
-;;hippie的自动补齐策略，优先调用了senator的分析结果：
-(autoload 'senator-try-expand-semantic "senator")
 
 ;; 设置每次保存时要更新的项目
 (setq header-update-on-save
@@ -642,21 +641,6 @@ try-expand-whole-kill))
 (require 'htmlize)
 (setq htmlize-html-charset "utf-8")
 (autoload 'htmlize-buffer "htmlize" "" t)
-
-;;muse
-(add-to-list 'load-path "~/.emacs.d/site-lisp/muse")
-(add-to-list 'auto-mode-alist '("\\.muse$" . muse-mode))
-(require 'muse-mode)
-(require 'muse-html)
-(require 'muse-wiki)
-(require 'muse-latex)
-(require 'muse-latex2png)
-(require 'muse-texinfo)
-(require 'muse-docbook)
-(add-hook 'muse-mode-hook
- '(lambda ()
-     (setq outline-regexp "\\*+ ")))
-(require 'muse-html)
 
 ;html
 ;(autoload 'html-helper-mode "html-helper-mode" "Yay HTML" t)
@@ -701,7 +685,7 @@ try-expand-whole-kill))
 (add-hook 'emaxmia-mode-hook 'emaxima-mark-file-as-emaxima)
 (autoload 'imaxima "imaxima" "Image support for Maxima." t)
 
-;;‘color-theme
+;;color-theme
 (require 'color-theme)
 (color-theme-initialize)
 (color-theme-blue-gnus)
@@ -888,7 +872,6 @@ try-expand-whole-kill))
 
 ;;;TRAMP
 (add-to-list 'load-path "~/.emacs.d/site-lisp/tramp/lisp/")
-;;(require 'ange-ftp)
 (require 'tramp)
 (require 'tramp-util)
 (setq tramp-verbose 10)
@@ -952,15 +935,24 @@ try-expand-whole-kill))
 (autoload 'js2-mode "js2-mode" nil t)
 (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
 
-;;(add-to-list 'load-path "~/.emacs.d/site-lisp/zf")
-;;(require 'zf-mode)
-;;(zf-mode-setup)
+;(add-to-list 'load-path "~/.emacs.d/site-lisp/zf")
+;(require 'zf-mode)
+;(zf-mode-setup)
 
 ;;evil
-(add-to-list 'load-path "~/.emacs.d/site-lisp/evil")
-(require 'evil)
-(evil-mode 1)
+;(add-to-list 'load-path "~/.emacs.d/site-lisp/evil")
+;(require 'evil)
+;(evil-mode 1)
+;(setq evil-shift-width 4)
+
 
 ;;smex
-(require 'smex)
-(smex-initialize)
+;;(require 'smex)
+;;(smex-initialize)
+
+;;git-emacs
+(add-to-list 'load-path "~/.emacs.d/site-lisp/git-emacs/")
+(require 'git-emacs)
+
+;;svn
+(require 'vc-svn17)
