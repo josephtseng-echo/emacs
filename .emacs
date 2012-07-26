@@ -161,7 +161,7 @@
 (semantic-load-enable-minimum-features)
 (semantic-load-enable-code-helpers)
 (semantic-load-enable-guady-code-helpers)
-(semantic-load-enable-excessive-code-helpers)
+;(semantic-load-enable-excessive-code-helpers)
 ;(semantic-load-enable-semantic-debugging-helpers)
 
 ;;ecb
@@ -443,9 +443,9 @@ autopair-handle-action-fns
                     )
 
 ;;session
-;;(require 'session)
-;;(add-hook 'after-init-hook
-;;'session-initialize)
+(require 'session)
+(add-hook 'after-init-hook
+'session-initialize)
 
 ;;打开缺省禁用的功能
 (setq version-control t)
@@ -469,60 +469,45 @@ autopair-handle-action-fns
      ("gnus" . emacs-lisp-mode)
      ("\\.idl$" . idl-mode)))
 
-;;一个简单的办法设置 auto-mode-alist, 免得写很多 add-to-list.
-(mapcar
- (function (lambda (setting)
-             (setq auto-mode-alist
-                   (cons setting auto-mode-alist))))
- '(("\\.xml$".  sgml-mode)
-   ("\\\.bash" . sh-mode)
-   ("\\.rdf$".  sgml-mode)
-   ("\\.session" . emacs-lisp-mode)
-   ("\\.l$" . c-mode)
-   ("\\.css$" . css-mode)
-   ("\\.cfm$" . html-mode)
-   ("gnus" . emacs-lisp-mode)
-   ("\\.idl$" . idl-mode)))
-
 ;;让 dired 可以递归的拷贝和删除目录
 (setq dired-recursive-copies 'top)
 (setq dired-recursive-deletes 'top)
 
 ;; 设置 hippie-expand 很好用的功能。 M-x hippie-expand
-(setq hippie-expand-try-functions-list
-      '(
-        try-expand-dabbrev
-        try-expand-dabbrev-visible
-        try-expand-dabbrev-all-buffers
-        try-expand-dabbrev-from-kill
-        try-complete-file-name-partially
-        try-complete-file-name
-        try-expand-all-abbrevs
-        try-expand-list
-        try-expand-line
-        try-complete-lisp-symbol-partially
-        try-complete-lisp-symbol))
+;;(setq hippie-expand-try-functions-list
+;;      '(
+;;        try-expand-dabbrev
+;;        try-expand-dabbrev-visible
+;;        try-expand-dabbrev-all-buffers
+;;        try-expand-dabbrev-from-kill
+;;        try-complete-file-name-partially
+;;        try-complete-file-name
+;;        try-expand-all-abbrevs
+;;        try-expand-list
+;;        try-expand-line
+;;        try-complete-lisp-symbol-partially
+;;        try-complete-lisp-symbol))
 
 ;;临时记号
 ;;有时你需要跳到另一个文件进行一些操作，然后很快的跳回来。你当然可以 使用 bookmark或者寄存器。
 ;;但是这些实在是太慢了。你多想拥有vi那样的 ma, mb, 'a, 'b 的操作。现在你可以用几行 elisp 达到类似的目的
-(global-set-key [(control ?\.)] 'ska-point-to-register)
-(global-set-key [(control ?\,)] 'ska-jump-to-register)
-(defun ska-point-to-register()
-  "Store cursorposition _fast_ in a register.
-Use ska-jump-to-register to jump back to the stored
-position."
-  (interactive)
-  (setq zmacs-region-stays t)
-  (point-to-register 8))
-(defun ska-jump-to-register()
-  "Switches between current cursorposition and position
-that was stored with ska-point-to-register."
-  (interactive)
-  (setq zmacs-region-stays t)
-  (let ((tmp (point-marker)))
-        (jump-to-register 8)
-        (set-register 8 tmp)))
+;;(global-set-key [(control ?\.)] 'ska-point-to-register)
+;;(global-set-key [(control ?\,)] 'ska-jump-to-register)
+;;(defun ska-point-to-register()
+;;  "Store cursorposition _fast_ in a register.
+;;Use ska-jump-to-register to jump back to the stored
+;;position."
+;;  (interactive)
+;; (setq zmacs-region-stays t)
+;; (point-to-register 8))
+;;(defun ska-jump-to-register()
+;;  "Switches between current cursorposition and position
+;;that was stored with ska-point-to-register."
+;;  (interactive)
+;;  (setq zmacs-region-stays t)
+;;  (let ((tmp (point-marker)))
+;;        (jump-to-register 8)
+;;        (set-register 8 tmp)))
 
 ;;鼠标滚轮，默认的滚动太快，这里改为3行
 (defun up-slightly () (interactive) (scroll-up 3))
@@ -613,28 +598,28 @@ scroll-conservatively 10000)
              (c-set-style "Stroustrup")))
 
 ;; 设置每次保存时要更新的项目
-(setq header-update-on-save
-    '(  filename
-        modified
-        counter
-        copyright))
+;;(setq header-update-on-save
+;;    '(  filename
+;;        modified
+;;        counter
+;;        copyright))
 ;; 设置文件头的显示格式
-(setq header-field-list
-'(  filename  ;文件名
-    blank    ;空行，下同
-    ;;copyright ;;版权
-    version
-    author  ;作者
-    created   ;创建人
-    blank
-    description   ;描述
-    ;;blank
-    ;;modified_by ;更改者
-   ;; blank
-    ;;status  ;状态，是否发布
-    ;;更新
-    ;;blank
-  ))
+;;(setq header-field-list
+;;'(  filename  ;文件名
+;;    blank    ;空行，下同
+;;    ;;copyright ;;版权
+;;    version
+;;    author  ;作者
+;;    created   ;创建人
+;;    blank
+;;    description   ;描述
+;;    ;;blank
+;;    ;;modified_by ;更改者
+;;   ;; blank
+;;    ;;status  ;状态，是否发布
+;;    ;;更新
+;;    ;;blank
+;;  ))
 
 ;; Htmlize
 (setq load-path (append (list (expand-file-name "~/.emacs.d/site-lisp/htmlize")) load-path))
@@ -692,13 +677,13 @@ scroll-conservatively 10000)
 ;(color-theme-classic)
 
 ;;保存桌面
-;;(setq desktop-dirname "~/.emacs.d/"
-;;desktop-base-file-name "emacs.desktop"
-;;desktop-base-lock-name "lock"
-;;desktop-path (list desktop-dirname)
-;;desktop-save t
-;;desktop-files-not-to-save "^$" ;reload tramp paths
-;;desktop-load-locked-desktop nil)
+(setq desktop-dirname "~/.emacs.d/"
+desktop-base-file-name "emacs.desktop"
+desktop-base-lock-name "lock"
+desktop-path (list desktop-dirname)
+desktop-save t
+desktop-files-not-to-save "^$" ;reload tramp paths
+desktop-load-locked-desktop nil)
 
 ;;(desktop-save-mode t)
 
@@ -871,26 +856,24 @@ scroll-conservatively 10000)
                                   autoconf-mode makefile-automake-mode)))
 
 ;;;TRAMP
-(add-to-list 'load-path "~/.emacs.d/site-lisp/tramp/lisp/")
-(require 'tramp)
-(require 'tramp-util)
-(setq tramp-verbose 10)
-(setq tramp-debug-buffer t)
-(setq tramp-disable-ange-ftp)
-(setq tramp-default-method "plink") 
-(setq tramp-ftp-method "scp")
-(add-to-list 'Info-default-directory-list "~/.emacs.d/tramp/info/")
-(setq tramp-shell-prompt-pattern "^[^$>\n]*[#$%>] *\\(\[[0-9;]*[a-zA-Z] *\\)*")
+;;(add-to-list 'load-path "~/.emacs.d/site-lisp/tramp/lisp/")
+;;(require 'tramp)
+;;(require 'tramp-util)
+;;(setq tramp-verbose 10)
+;;(setq tramp-debug-buffer t)
+;;(setq tramp-default-method "ftp")
+;;(add-to-list 'Info-default-directory-list "~/.emacs.d/tramp/info/")
+;;(setq tramp-shell-prompt-pattern "^[^$>\n]*[#$%>] *\\(\[[0-9;]*[a-zA-Z] *\\)*")
 
-;(setq load-path (cons "~/.emacs.d/site-lisp/epg" load-path))
-;(require 'epa-file)
-;(epa-file-enable)
-;(setq epa-file-encrypt-to nil)
-;(setq epa-file-cache-passphrase-for-symmetric-encryption t)
-;(setq epa-file-inhibit-auto-save nil)
+;;;(setq load-path (cons "~/.emacs.d/site-lisp/epg" load-path))
+;;;(require 'epa-file)
+;;;(epa-file-enable)
+;;;(setq epa-file-encrypt-to nil)
+;;;(setq epa-file-cache-passphrase-for-symmetric-encryption t)
+;;;(setq epa-file-inhibit-auto-save nil)
 
 ;;ange-ftp
-(require 'ange-ftp)
+;;(require 'ange-ftp)
 
 (require 'time-stamp)
 (add-hook 'write-file-hooks 'time-stamp)
@@ -935,15 +918,15 @@ scroll-conservatively 10000)
 (autoload 'js2-mode "js2-mode" nil t)
 (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
 
-;(add-to-list 'load-path "~/.emacs.d/site-lisp/zf")
-;(require 'zf-mode)
-;(zf-mode-setup)
+;;;(add-to-list 'load-path "~/.emacs.d/site-lisp/zf")
+;;;(require 'zf-mode)
+;;;(zf-mode-setup)
 
 ;;evil
-;(add-to-list 'load-path "~/.emacs.d/site-lisp/evil")
-;(require 'evil)
-;(evil-mode 1)
-;(setq evil-shift-width 4)
+;;;(add-to-list 'load-path "~/.emacs.d/site-lisp/evil")
+;;;(require 'evil)
+;;;(evil-mode 1)
+;;;(setq evil-shift-width 4)
 
 
 ;;smex
@@ -951,8 +934,14 @@ scroll-conservatively 10000)
 ;;(smex-initialize)
 
 ;;git-emacs
-(add-to-list 'load-path "~/.emacs.d/site-lisp/git-emacs/")
-(require 'git-emacs)
+;;(add-to-list 'load-path "~/.emacs.d/site-lisp/git-emacs/")
+;;(require 'git-emacs)
 
 ;;svn
-(require 'vc-svn17)
+;;(require 'vc-svn17)
+
+;;cygwin
+;;(setenv "PATH" (concat "E:/cygwin/bin;" (getenv "PATH")))
+;;(setq exec-path (cons "E:/cygwin/bin/" exec-path))
+;;(require 'cygwin-mount)
+;;(cygwin-mount-activate)
