@@ -1,0 +1,23 @@
+;;init
+(setq stack-trace-on-error nil)
+
+(add-to-list 'load-path "~/.emacs.d/site-lisp/")
+(with-no-warnings
+   (require 'cl))
+(require 'init-base)
+(require 'init-themes)
+(require 'init-web)
+(require 'init-php)
+(require 'init-c)
+(require 'init-auto-complete)
+(require 'init-yasnippet)
+(require 'init-tabbar)
+(require 'init-plug)
+(require 'init-calendar)
+(require 'init-cperl)
+(require 'init-python)
+(require 'init-org)
+(require 'init-cscope)
+(require 'init-func)
+(require 'init-shortcuts)
+(provide 'init)

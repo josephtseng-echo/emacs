@@ -1,0 +1,16 @@
+002F:.yas-parents:0A:1:14=5255E090:16=47d21313:text-mode
+002F:b.yasnippet:04C:1:14=5255E090:16=47d21313:# contributor: Xah Lee xahlee.org
+# name: <b>...</b>
+# key: b
+# --
+<b>$0</b>0028:body:072:1:14=5255E090:16=47d21313:# contributor: Jimmy Wu <frozenthrone88@gmail.com>
+# name: <body>...</body>
+# key: body
+# --
+<body$1>
+  $0
+</body>0026:br:057:1:14=5255E090:16=47d21313:# contributor: Jimmy Wu <frozenthrone88@gmail.com>
+# name: <br />
+# key: br
+# --
+<br />0028:code:070:1:14=5255E090:16=47d21313:
