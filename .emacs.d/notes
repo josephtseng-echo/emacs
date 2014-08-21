@@ -1,8 +1,0 @@
-
-去除^m
-M-x replace-string RET C-q C-m RET
-
-转编码
-C-x C-m f utf-8-unix RET
-C-x C-m c RET C-x C-w RET
-
