@@ -71,6 +71,7 @@
 
 ;; 回车缩进
 (global-set-key "\C-m" 'newline-and-indent)
+(global-set-key (kbd "C-<return>") 'newline)
 
 ;; bell给关掉
 (setq visible-bell t)
@@ -79,8 +80,22 @@
 (set-default-font "12")
 
 ;;
-(setq some-variable t)
 (set 'some-variable t)
+
+;; 自动的在文件末增加一新行
+(setq require-final-newline t)
+
+;; 当光标在行尾上下移动的时候，始终保持在行尾。
+(setq track-eol t)
+
+;;把C-j绑定到”到达指定行上”(goto-line)
+(global-set-key (kbd "C-j") 'goto-line)
+
+;;禁止在鼠标点击的地方插入剪贴板内容
+(setq mouse-yank-at-point t)
+
+;;所有模式中都自动填充
+(setq-default auto-fill-function 'do-auto-fill)
 
 ;;禁用启动信息
 (setq inhibit-startup-message t)
@@ -91,11 +106,15 @@
 ;;不要生成临时文件
 ;;(setq-default make-backup-files nil)
 
-;;支持emacs和外部程序的拷贝粘贴
-(setq x-select-enable-clipboard t)
-
 ;;显示80列就换行
 (setq default-fill-column 80)
+
+;;防止页面滚动时跳动
+;;scroll-margin 3 可以在靠近屏幕边沿3行时就开始滚动
+;;scroll-step 1 设置每次都是一行一行向下翻，更有连贯性。
+(setq scroll-step 1 
+scroll-margin 3 
+scroll-conservatively 10000)
 
 ;;在标题栏提示当前位置
 (setq frame-title-format "josephzeng@%b")

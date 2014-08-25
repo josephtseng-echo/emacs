@@ -13,4 +13,5 @@
 (require 'init-func)
 (require 'init-shortcuts)
 (require 'init-evil)
+(require 'init-calendar)
 (provide 'init)

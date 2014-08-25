@@ -6,7 +6,7 @@
 (global-set-key "\C-cl" 'org-store-link)
 (global-set-key "\C-ca" 'org-agenda)
 (global-set-key "\C-ci" 'org-iswitchb)
-(setq org-agenda-files (list "/cygdrive/e/2014/gtd/org/"
+(setq org-agenda-files (list "/cygdrive/e/gtd/org/"
 ))
 
 ;; 定义快捷插入操作
@@ -26,8 +26,8 @@
 
 (setq org-publish-project-alist
       '(("org"
-         :base-directory "/cygdrive/e/2014/gtd/org"
-         :publishing-directory "/cygdrive/e/2014/gtd/publish"
+         :base-directory "/cygdrive/e/gtd/org"
+         :publishing-directory "/cygdrive/e/gtd/publish"
          :base-extension "org"
          :recursive t
          :publishing-function org-publish-org-to-html
@@ -38,8 +38,8 @@
          :section-numbers nil
          :style "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/base.css\" \/><link rel=\"stylesheet\" type=\"text/css\" href=\"css/note.css\" \/>")
         ("note-static"
-         :base-directory "/cygdrive/e/2014/gtd/org"
-         :publishing-directory "/cygdrive/e/2014/gtd/publish"
+         :base-directory "/cygdrive/e/gtd/org"
+         :publishing-directory "/cygdrive/e/gtd/publish"
          :recursive t
          :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|swf\\|zip\\|gz\\|txt\\|el"
          :publishing-function org-publish-attachment)
@@ -47,4 +47,9 @@
          :components ("note-org" "note-static")
          :author "josephzeng36@gmail.com"
          )))
+
+(defun org-summary-todo (n-done n-not-done)
+	"Swith entry to DONE when all subentries are done, to TODO otherwise."
+        (let (org-log-done org-log-states)   ; turn off logging.
+        (org-todo (if (= n-not-done 0) "DONE" "TODO"))))
 (provide 'init-org)
