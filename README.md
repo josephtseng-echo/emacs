@@ -1,1 +1,1 @@
-emacs 24+
+emacs 24.4+
