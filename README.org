@@ -1,0 +1,9 @@
+* env
+  emacs -version >= 26.3
+* use
+#+begin_src bash
+  #linux
+  ~ cd ~
+  ~ git clone https://github.com/josephzeng36/emacs.git
+  ~ emacs #M-x package-refresh-contents
+#+end_src
