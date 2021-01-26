@@ -1,1 +1,0 @@
-("~/work/svn/texas/" "~/work/svn/fetcher/")
